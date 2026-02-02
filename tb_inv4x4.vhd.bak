@@ -1,0 +1,144 @@
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+use work.matrix_pkg.all;
+
+entity tb_inv4x4 is
+end entity;
+
+architecture sim of tb_inv4x4 is
+  signal clk, rst, start, done : std_logic := '0';
+  signal A   : mat4_t;
+  signal INV : mat4_t;
+
+  component inv4x4_block is
+    port (
+      clk   : in  std_logic;
+      rst   : in  std_logic;
+      start : in  std_logic;
+      a_in  : in  mat4_t;
+      done  : out std_logic;
+      inv_o : out mat4_t
+    );
+  end component;
+
+  -- Q multiply (same scaling): (Q*Q)>>FRAC_BITS
+  function q_mul(x, y : q_t) return q_t is
+    variable prod  : signed(2*WORD_BITS-1 downto 0);
+    variable prodS : signed(2*WORD_BITS-1 downto 0);
+  begin
+    prod  := x * y;                          -- 16x16 -> 32
+    prodS := shift_right(prod, FRAC_BITS);   -- back to Q scale
+    return resize(prodS, WORD_BITS);
+  end function;
+
+  -- 4x4 matrix multiply in Q format
+  function mat4_mul(a, b : mat4_t) return mat4_t is
+    variable r    : mat4_t;
+    variable acc  : signed(2*WORD_BITS+4 downto 0); -- wider accumulator
+    variable p32  : signed(2*WORD_BITS-1 downto 0);
+    variable accS : signed(2*WORD_BITS+4 downto 0);
+  begin
+    for i in 0 to 3 loop
+      for j in 0 to 3 loop
+        acc := (others => '0');
+        for k in 0 to 3 loop
+          p32 := a(i,k) * b(k,j);                      -- 16x16 -> 32
+          acc := acc + resize(p32, acc'length);
+        end loop;
+
+        -- scale back
+        accS := shift_right(acc, FRAC_BITS);
+        r(i,j) := resize(accS, WORD_BITS);
+      end loop;
+    end loop;
+    return r;
+  end function;
+
+  -- absolute value for q_t
+  function q_abs(x : q_t) return q_t is
+  begin
+    if x(WORD_BITS-1) = '1' then
+      return -x;
+    else
+      return x;
+    end if;
+  end function;
+
+  -- convenience constants in Q format
+  function q_one return q_t is
+  begin
+    return to_signed(1 * (2 ** FRAC_BITS), WORD_BITS);
+  end function;
+
+  function q_zero return q_t is
+  begin
+    return (others => '0');
+  end function;
+
+begin
+  DUT: inv4x4_block
+    port map(
+      clk   => clk,
+      rst   => rst,
+      start => start,
+      a_in  => A,
+      done  => done,
+      inv_o => INV
+    );
+
+  -- clock 100 MHz
+  clk <= not clk after 5 ns;
+
+  process
+    variable P : mat4_t;
+    variable tol : q_t;
+  begin
+    -- reset
+    rst <= '1';
+    wait for 20 ns;
+    rst <= '0';
+
+    -- Input matrix A (integers -> Q4.12)
+    A(0,0) <= to_q(4); A(0,1) <= to_q(1); A(0,2) <= to_q(0); A(0,3) <= to_q(0);
+    A(1,0) <= to_q(2); A(1,1) <= to_q(3); A(1,2) <= to_q(1); A(1,3) <= to_q(0);
+    A(2,0) <= to_q(0); A(2,1) <= to_q(1); A(2,2) <= to_q(3); A(2,3) <= to_q(1);
+    A(3,0) <= to_q(0); A(3,1) <= to_q(0); A(3,2) <= to_q(2); A(3,3) <= to_q(4);
+
+    wait for 20 ns;
+
+    -- start pulse
+    start <= '1';
+    wait for 10 ns;
+    start <= '0';
+
+    -- wait completion
+    wait until done = '1';
+    wait for 20 ns;
+
+    -- compute P = A * INV (should be ~Identity)
+    P := mat4_mul(A, INV);
+
+    -- tolerance: e.g. 0.05 in Q4.12 => 0.05 * 4096 ≈ 205
+    tol := to_signed(205, WORD_BITS);
+
+    -- check diagonal ~ 1 and off-diagonal ~ 0
+    for i in 0 to 3 loop
+      for j in 0 to 3 loop
+        if i = j then
+          assert q_abs(P(i,j) - q_one) <= tol
+            report "FAIL: diagonal not ~1 at (" & integer'image(i) & "," & integer'image(j) & ")"
+            severity error;
+        else
+          assert q_abs(P(i,j) - q_zero) <= tol
+            report "FAIL: off-diagonal not ~0 at (" & integer'image(i) & "," & integer'image(j) & ")"
+            severity error;
+        end if;
+      end loop;
+    end loop;
+
+    assert false report "PASS: A*INV ~= I (within tolerance)" severity failure;
+  end process;
+
+end architecture;

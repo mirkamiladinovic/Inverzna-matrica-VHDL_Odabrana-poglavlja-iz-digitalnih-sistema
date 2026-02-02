@@ -1,0 +1,21 @@
+
+State Machine - |inv4x4_block|st
+Name st.DONE_ST st.ASSEMBLE st.WAIT_INV_S st.START_INV_S st.COMPUTE_S st.WAIT_INV_A11 st.START_INV_A11 st.LOAD_BLOCKS st.IDLE 
+st.IDLE 0 0 0 0 0 0 0 0 0 
+st.LOAD_BLOCKS 0 0 0 0 0 0 0 1 1 
+st.START_INV_A11 0 0 0 0 0 0 1 0 1 
+st.WAIT_INV_A11 0 0 0 0 0 1 0 0 1 
+st.COMPUTE_S 0 0 0 0 1 0 0 0 1 
+st.START_INV_S 0 0 0 1 0 0 0 0 1 
+st.WAIT_INV_S 0 0 1 0 0 0 0 0 1 
+st.ASSEMBLE 0 1 0 0 0 0 0 0 1 
+st.DONE_ST 1 0 0 0 0 0 0 0 1 
+
+State Machine - |inv4x4_block|inv2x2:U_INV2|st
+Name st.OUTPUT st.NR2 st.NR1 st.INIT_RECIP st.CALC_DET st.IDLE 
+st.IDLE 0 0 0 0 0 0 
+st.CALC_DET 0 0 0 0 1 1 
+st.INIT_RECIP 0 0 0 1 0 1 
+st.NR1 0 0 1 0 0 1 
+st.NR2 0 1 0 0 0 1 
+st.OUTPUT 1 0 0 0 0 1 

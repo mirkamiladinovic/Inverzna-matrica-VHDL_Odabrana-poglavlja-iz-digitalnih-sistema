@@ -1,0 +1,14 @@
+Analysis & Synthesis Status : Successful - Mon Feb 02 22:12:44 2026
+Quartus II 64-Bit Version : 13.0.1 Build 232 06/12/2013 SP 1 SJ Web Edition
+Revision Name : inv4x4_block
+Top-level Entity Name : inv4x4_block
+Family : Cyclone IV E
+Total logic elements : 1,811
+    Total combinational functions : 1,282
+    Dedicated logic registers : 1,090
+Total registers : 1090
+Total pins : 516
+Total virtual pins : 0
+Total memory bits : 0
+Embedded Multiplier 9-bit elements : 112
+Total PLLs : 0

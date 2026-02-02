@@ -1,0 +1,78 @@
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+use ieee.fixed_pkg.all;
+
+package matrix_pkg is
+  -- Q format: sfixed(3 downto -12) -> 1 sign + 3 integer bita + 12 fractional
+  -- Podesi po potrebi (više preciznosti -> sporije/više resursa)
+  subtype q_t is sfixed(3 downto -12);
+
+  type mat2_t is array (0 to 1, 0 to 1) of q_t;
+  type mat4_t is array (0 to 3, 0 to 3) of q_t;
+
+  function to_q(x : real) return q_t;
+
+  function add2(a, b : mat2_t) return mat2_t;
+  function sub2(a, b : mat2_t) return mat2_t;
+  function neg2(a : mat2_t) return mat2_t;
+  function mul2(a, b : mat2_t) return mat2_t;
+end package;
+
+package body matrix_pkg is
+  function to_q(x : real) return q_t is
+  begin
+    return to_sfixed(x, q_t'high, q_t'low);
+  end;
+
+  function add2(a, b : mat2_t) return mat2_t is
+    variable r : mat2_t;
+  begin
+    for i in 0 to 1 loop
+      for j in 0 to 1 loop
+        r(i,j) := resize(a(i,j) + b(i,j), q_t'high, q_t'low);
+      end loop;
+    end loop;
+    return r;
+  end;
+
+  function sub2(a, b : mat2_t) return mat2_t is
+    variable r : mat2_t;
+  begin
+    for i in 0 to 1 loop
+      for j in 0 to 1 loop
+        r(i,j) := resize(a(i,j) - b(i,j), q_t'high, q_t'low);
+      end loop;
+    end loop;
+    return r;
+  end;
+
+  function neg2(a : mat2_t) return mat2_t is
+    variable r : mat2_t;
+  begin
+    for i in 0 to 1 loop
+      for j in 0 to 1 loop
+        r(i,j) := resize(-a(i,j), q_t'high, q_t'low);
+      end loop;
+    end loop;
+    return r;
+  end;
+
+  function mul2(a, b : mat2_t) return mat2_t is
+    variable r : mat2_t;
+    variable acc : sfixed(7 downto -24); -- širi akumulator
+    variable p   : sfixed(7 downto -24);
+  begin
+    for i in 0 to 1 loop
+      for j in 0 to 1 loop
+        acc := to_sfixed(0.0, acc'high, acc'low);
+        for k in 0 to 1 loop
+          p := resize(a(i,k), p'high, p'low) * resize(b(k,j), p'high, p'low);
+          acc := acc + p;
+        end loop;
+        r(i,j) := resize(acc, q_t'high, q_t'low);
+      end loop;
+    end loop;
+    return r;
+  end;
+end package body;

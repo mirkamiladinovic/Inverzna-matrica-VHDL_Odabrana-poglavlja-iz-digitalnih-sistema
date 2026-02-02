@@ -1,0 +1,178 @@
+# Reading D:/altera/13.0sp1/modelsim_ase/tcl/vsim/pref.tcl 
+# do inv4x4_block_run_msim_rtl_vhdl.do 
+# if {[file exists rtl_work]} {
+# 	vdel -lib rtl_work -all
+# }
+# vlib rtl_work
+# vmap work rtl_work
+# Copying D:\altera\13.0sp1\modelsim_ase\win32aloem/../modelsim.ini to modelsim.ini
+# Modifying modelsim.ini
+# ** Warning: Copied D:\altera\13.0sp1\modelsim_ase\win32aloem/../modelsim.ini to modelsim.ini.
+#          Updated modelsim.ini.
+# 
+# vcom -2008 -work work {D:/altera/13.0sp1/andjela/matrix_pkg.vhd}
+# Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling package matrix_pkg
+# -- Compiling package body matrix_pkg
+# -- Loading package matrix_pkg
+# vcom -2008 -work work {D:/altera/13.0sp1/andjela/inv4x4_block.vhd}
+# Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Loading package matrix_pkg
+# -- Compiling entity inv4x4_block
+# -- Compiling architecture rtl of inv4x4_block
+# vcom -2008 -work work {D:/altera/13.0sp1/andjela/inv2x2.vhd}
+# Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Loading package matrix_pkg
+# -- Compiling entity inv2x2
+# -- Compiling architecture rtl of inv2x2
+# 
+vlib work
+
+vmap work work
+# Modifying modelsim.ini
+
+vlib work
+# ** Warning: (vlib-34) Library already exists at "work".
+# 
+vmap work work
+# Modifying modelsim.ini
+vcom matrix_pkg.vhd
+# Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+# ** Error: (vcom-7) Failed to open design unit file "matrix_pkg.vhd" in read mode.
+# 
+# No such file or directory. (errno = ENOENT)
+# D:/altera/13.0sp1/modelsim_ase/win32aloem/vcom failed.
+cd D:/altera/13.0sp1/andjela/
+# reading D:\altera\13.0sp1\modelsim_ase\win32aloem/../modelsim.ini
+vlib work
+vmap work work
+# Copying D:\altera\13.0sp1\modelsim_ase\win32aloem/../modelsim.ini to modelsim.ini
+# Modifying modelsim.ini
+# ** Warning: Copied D:\altera\13.0sp1\modelsim_ase\win32aloem/../modelsim.ini to modelsim.ini.
+#          Updated modelsim.ini.
+vcom matrix_pkg.vhd
+# Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling package matrix_pkg
+# -- Compiling package body matrix_pkg
+# -- Loading package matrix_pkg
+vcom inv2x2.vhd
+# Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Loading package matrix_pkg
+# -- Compiling entity inv2x2
+# -- Compiling architecture rtl of inv2x2
+vcom inv4x4.vhd
+# Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+# ** Error: (vcom-7) Failed to open design unit file "inv4x4.vhd" in read mode.
+# 
+# No such file or directory. (errno = ENOENT)
+# D:/altera/13.0sp1/modelsim_ase/win32aloem/vcom failed.
+vcom inv4x4.vhd
+# Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+# ** Error: (vcom-7) Failed to open design unit file "inv4x4.vhd" in read mode.
+# 
+# No such file or directory. (errno = ENOENT)
+# D:/altera/13.0sp1/modelsim_ase/win32aloem/vcom failed.
+cd D:/altera/13.0sp1/andjela
+# reading modelsim.ini
+vcom inv4x4.vhd
+# Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+# ** Error: (vcom-7) Failed to open design unit file "inv4x4.vhd" in read mode.
+# 
+# No such file or directory. (errno = ENOENT)
+# D:/altera/13.0sp1/modelsim_ase/win32aloem/vcom failed.
+vcom inv4x4_block.vhd
+# Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Loading package matrix_pkg
+# -- Compiling entity inv4x4_block
+# -- Compiling architecture rtl of inv4x4_block
+vcom tb_inv4x4.vhd
+# Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Loading package matrix_pkg
+# -- Compiling entity tb_inv4x4
+# -- Compiling architecture sim of tb_inv4x4
+vsim work.tb_inv4x4
+# vsim work.tb_inv4x4 
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.numeric_std(body)
+# Loading work.matrix_pkg(body)
+# Loading work.tb_inv4x4(sim)
+# Loading work.inv4x4_block(rtl)
+# Loading work.inv2x2(rtl)
+add wave *
+run -all
+# ** Error: FAIL: diagonal not ~1 at (0,0)
+#    Time: 265 ns  Iteration: 0  Instance: /tb_inv4x4
+# ** Error: FAIL: diagonal not ~1 at (1,1)
+#    Time: 265 ns  Iteration: 0  Instance: /tb_inv4x4
+# ** Error: FAIL: diagonal not ~1 at (2,2)
+#    Time: 265 ns  Iteration: 0  Instance: /tb_inv4x4
+# ** Error: FAIL: diagonal not ~1 at (3,3)
+#    Time: 265 ns  Iteration: 0  Instance: /tb_inv4x4
+# ** Failure: PASS: A*INV ~= I (within tolerance)
+#    Time: 265 ns  Iteration: 0  Process: /tb_inv4x4/line__95 File: tb_inv4x4.vhd
+# Break in Process line__95 at tb_inv4x4.vhd line 141
+# WARNING: No extended dataflow license exists
+vcom tb_inv4x4.vhd
+# Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Loading package matrix_pkg
+# -- Compiling entity tb_inv4x4
+# -- Compiling architecture sim of tb_inv4x4
+vsim work.tb_inv4x4
+# vsim work.tb_inv4x4 
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.numeric_std(body)
+# Loading work.matrix_pkg(body)
+# Loading work.tb_inv4x4(sim)
+# Loading work.inv4x4_block(rtl)
+# Loading work.inv2x2(rtl)
+add wave *
+run -all
+# ** Note: TEST1 PASS: Identity inversion OK
+#    Time: 275 ns  Iteration: 0  Instance: /tb_inv4x4
+# ** Note: TEST2 diag P(0,0) scaled=0
+#    Time: 525 ns  Iteration: 0  Instance: /tb_inv4x4
+# ** Note: TEST2 diag P(1,1) scaled=0
+#    Time: 525 ns  Iteration: 0  Instance: /tb_inv4x4
+# ** Note: TEST2 diag P(2,2) scaled=0
+#    Time: 525 ns  Iteration: 0  Instance: /tb_inv4x4
+# ** Note: TEST2 diag P(3,3) report scaled=0
+#    Time: 525 ns  Iteration: 0  Instance: /tb_inv4x4
+# ** Failure: DONE
+#    Time: 525 ns  Iteration: 0  Process: /tb_inv4x4/line__86 File: tb_inv4x4.vhd
+# Break in Process line__86 at tb_inv4x4.vhd line 157
